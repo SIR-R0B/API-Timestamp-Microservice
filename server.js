@@ -4,6 +4,9 @@
 // init project
 var express = require('express');
 var app = express();
+var moment = require('moment');
+var momentTimezone = require('moment-timezone');
+
 
 // enable CORS (https://en.wikipedia.org/wiki/Cross-origin_resource_sharing)
 // so that your API is remotely testable by FCC 
@@ -24,15 +27,53 @@ app.get("/api/hello", function (req, res) {
   res.json({greeting: 'hello API'});
 });
 
-app.get('/api/timestamp', function(req, res, next) {
-req.time = new Date().toString(); // Hypothetical synchronous operation
+
+app.get('/api/timestamp/', function(req, res, next) {  
+  
+  
+req.time = new Date();
+  let date = req.time;
+        res.json({
+            "unix": date.getTime(),
+            "utc": date.toUTCString()
+                }
+                );   
+    
 next();
 }, function(req, res) {
-res.send({
-  "unix": req.time,
-  "utc": req.time
-        },
-        );
+  
+  //do something
+
+})
+
+
+app.get('/api/timestamp/:date_string', function(req, res, next) {  
+  
+  
+  //handle when param is a number. Note: Unix time is seconds NOT milliseconds since Jan 1 1970
+  if (!isNaN(req.params.date_string)){
+     let date = new Date(req.params.date_string * 1000);
+        res.json({
+            "unix": date.getTime(),
+            "utc": date.toUTCString()
+                }
+                );
+     }
+  //handle when param is NOT a number
+  if (isNaN(req.params.date_string)){
+     let date = new Date(req.params.date_string);
+        res.json({
+            "unix": date.getTime(),
+            "utc": date.toUTCString()
+                }
+                );
+     }
+    
+next();
+}, function(req, res) {
+  
+  //do something
+
 })
 
 
