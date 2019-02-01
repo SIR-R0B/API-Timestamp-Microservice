@@ -4,8 +4,6 @@
 // init project
 var express = require('express');
 var app = express();
-var moment = require('moment');
-var momentTimezone = require('moment-timezone');
 
 
 // enable CORS (https://en.wikipedia.org/wiki/Cross-origin_resource_sharing)
